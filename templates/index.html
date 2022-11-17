@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+      {% comment %} action = "{% url 'result' %}" {% endcomment %}
+        <form method = "POST"> 
+          {% csrf_token %}
+            <div class="form-group">
+              <label for="url">Enter URL / PAYLOAD : </label>
+              <input class="url form-control"  id="url" placeholder="URL/PAYLOAD" name="urlname">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+          <br> </br> 
+          <hr> </hr> 
+          The Logistic Regression prediction is {{lr}} <br> </br>
+          The Multi binomial model prediction is {{mnb}} <br> </br>  
+
+          {% comment %} The Random forest model prediction is {{rf}} <br> </br> {% endcomment %}
+          {% comment %} The randomforest model prediction is {{svc}} <br> </br> {% endcomment %}
+          {% comment %} The SVC model prediction is {{rf}} <br> </br> {% endcomment %}
+
+
+          {% comment %} FEATURE EXTRACTED SPLITTED TRAINING SET PREDICTONS  {% endcomment %}
+          The XGB model prediction is {{xgb_FE}} <br> </br>
+          The AdaBoostClassifier model prediction is {{ada_FE}} <br> </br>
+          The SGDClassifier model prediction is {{sgd_FE}} <br> </br>
+          The LogisticRegression model prediction is {{lr_FE}} <br> </br>
+          The RandomForestClassifier model prediction is {{rf_FE}} <br> </br>
+          The SVC model prediction is {{svm_FE}} <br> </br>
+          The DecisionTreeClassifier model prediction is {{dt_FE}} <br> </br>
+          The MultinomialNB model prediction is {{mnb_FE}} <br> </br>
+          
+          1 GRAM COUNT VECTORIZER 
+          2 GRAM COUNT VECTORIZER 
+          3 GRAM COUNT VECTORIZER 
+
+          1 GRAM TF-IDF VECTORIZER
+          2 GRAM TF-IDF VECTORIZER
+          3 GRAM TF-IDF VECTORIZER
+
+          {% comment %} {% for message in messages %}
+            <div class="alert alert-success">
+              {{ message }}
+            </div>
+          {% endfor %}  {% endcomment %}
+        
+        <script src="" async defer></script>
+    </body>
+</html>

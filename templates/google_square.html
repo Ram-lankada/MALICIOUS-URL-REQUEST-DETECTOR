@@ -1,0 +1,853 @@
+<html>  
+        <style>
+        body {
+        font-size: 10pt;
+        font-family: arial, sans-serif;
+        background-color : 282A3A ; 
+        height : 200vh ; 
+        }
+
+        a {
+        text-decoration: none;
+
+        }
+
+        a:hover {
+        text-decoration: underline;
+        }
+
+        button {
+        font-weight: bold;
+        font-family: arial;
+        }
+
+
+        /* Top Toolbar */
+
+        .top-toolbar {
+        height: 50px;
+        }
+
+        .top-toolbar nav {
+        float:right;
+        margin: 7px 21px;
+        }
+
+        .top-toolbar nav a {
+        margin: 3px 6px;
+        color: #404040;
+        }
+
+        .top-toolbar nav a:hover {
+        color: #111111;
+        }
+
+        .top-toolbar nav button {
+                padding: 15px 25px;
+                border-radius : 2vw ; 
+                position: absolute;
+                left: 91vw;
+                /* background-color: #4585F1;*/
+                background-image: -moz-linear-gradient(top left, #4084F9 0%, #4585F1 100%);
+                background-image: -o-linear-gradient(top left, #4084F9 0%, #4585F1 100%);
+                background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #4585F1), color-stop(1, #0097DE));
+                background-image: -webkit-linear-gradient(top left, #4084F9 0%, #4585F1 100%);
+                color: white;
+                border: 1px darkblue;
+                font-size: 9.5pt;
+        }
+
+        .top-toolbar nav button:hover {
+        box-shadow: 1px 1px 0 rgba(0,0,0,.2);
+        }
+
+        .top-toolbar nav img {
+        margin: 0 7.5px;
+        height: 22px;
+        position: relative;
+        top: 7px;}
+
+        /* End of Top Toolbar */
+        /* Search */
+
+        .search {
+        text-align: center;
+        clear: both;
+        margin: 4% 0 0 0;
+        top : 1vh ; 
+        }
+
+        .logo {
+        max-width: 21%;
+        margin: 0 auto;
+        }
+
+        .search img {
+
+                width: 30vw;
+                height: 18vh;
+                margin: 0vh -4vw;
+                margin-bottom: 0vh;
+        }
+
+        .search input {
+
+                width: 50vw;
+                height: 6.5vh;
+                border: 1px solid #D8D8D8;
+                padding: 5px;
+                font-size: 11pt;
+                /* background: url('images/microphone.png') no-repeat;
+                background-position: right;
+                background-size: 4.25%;*/
+        }
+
+        .search-bar {
+        max-width: 80%;
+        border-radius : 100px ; 
+        }
+
+        .form-control-feedback 
+        {
+                position: absolute;
+                z-index: 2;
+                display: block;
+                width: 2.375rem;
+                height: 2.375rem;
+                line-height: 2.375rem;
+                text-align: center;
+                pointer-events: none;
+                color: #aaa;
+                top: 36vh;
+                left: 24.6vw;
+        }
+
+        .search input:focus {
+        outline: none;
+        border: 1px solid #4285F4;
+        }
+
+        .search button {
+        margin: 14px 7px 0 5px;
+        padding: 7px 8px;
+        border-radius: 2px;
+        border: 1px solid #D0D0D0;
+        color: #444444;
+        background-image: -moz-linear-gradient(top, #F5F5F5 0%, #F0F0F0 100%);
+        background-image: -o-linear-gradient(top, #F5F5F5 0%, #F0F0F0 100%);
+        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #F5F5F5), color-stop(1, #F0F0F0));
+        background-image: -webkit-linear-gradient(top, #F5F5F5 0%, #F0F0F0 100%);
+        background-image: linear-gradient(to bottom, #F5F5F5 0%, #F0F0F0 100%);
+        }
+
+        .search button:hover {
+        box-shadow: 1px 1px 1px rgba(0,0,0,.1);
+        }
+
+        /* End of Search */
+        /* Footer */
+
+        footer {
+        position: fixed;
+        bottom: 0;
+        height: 42px;
+        width: 100%;
+        font-size: 9.5pt;
+        background-image: -moz-linear-gradient(top, #F5F5F5 0%, #F0F0F0 100%);
+        background-image: -o-linear-gradient(top, #F5F5F5 0%, #F0F0F0 100%);
+        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #F5F5F5), color-stop(1, #F0F0F0));
+        background-image: -webkit-linear-gradient(top, #F5F5F5 0%, #F0F0F0 100%);
+        background-image: linear-gradient(to bottom, #F5F5F5 0%, #F0F0F0 100%);
+        }
+
+        .footer-left {
+        float: left;
+        margin-left: 16px;
+        }
+
+        .footer-right {
+        float: right;
+        margin-right: 16px;
+        }
+
+        footer nav {
+        display: inline-block;
+        padding: 15px 0 0 0;
+        }
+
+        footer nav a {
+        padding: 3px 14px;
+        color: #646464;
+        }
+
+        footer nav a:hover {
+        color: #000000;
+        }
+
+        /* End of Footer */
+        {% comment %} 
+        /* Circle anime css */
+
+        svg
+        {
+                height: 95vh
+                width: 95vw
+        }
+
+        .st0, .st1, .st2, .st3
+        {
+                fill: none
+                stroke: #00C196
+                stroke-width: 42
+                stroke-miterlimit: 10
+        }
+
+        .st0 
+        {
+
+                stroke-dasharray: 12.1947,12.1947,12.1947,12.1947,12.1947,12.1947
+        }
+
+        .st1
+        {
+                stroke-dasharray: 50,90,200,30,40,0
+
+        }
+
+        .st2
+        {
+                stroke-linecap: square
+                stroke-dasharray: 120, 20, 110, 20, 140
+
+        }
+
+        .st3
+        {
+                stroke-width: 16
+                stroke-linecap: square
+
+        }
+
+        /* End of Circle anime css */ {% endcomment %}
+
+        .array
+        {
+
+        }
+        .circle 
+        {
+                box-sizing: border-box;
+                left: 25vw;
+                position: absolute;
+                border-radius: 3vw;
+                width: 5vw;
+                height: 10vh;
+                background: linear-gradient(139.6deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 109.45%);
+                box-shadow: 8px 10px 24px -1px rgba(0, 0, 0, 0.75);
+                backdrop-filter: blur(25px);
+                {% comment %} background-color : red ; {% endcomment %}
+        }
+        .circle:before {
+                content: '';
+                position: relative;
+                display: block;
+                width: 300%;
+                height: 300%;
+                box-sizing: border-box;
+                margin-left: -100%;
+                margin-top: -100%;
+                border-radius: 3vw;
+                background-color: #01a4e9;
+                animation: pulse-ring 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+                }
+                
+                .circle:after {
+                content: '';
+                position: absolute;
+                left: 0; 
+                top: 0;
+                display: block;
+                width: 100%;
+                height: 100%;
+                background-color: white;
+                border-radius: 3vw;
+                box-shadow: 0 0 8px rgba(0,0,0,.3);
+                animation: pulse-dot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -.4s infinite;
+                }
+        
+        @keyframes pulse-ring {
+                0% {
+                  transform: scale(.33);
+                }
+                80%, 100% {
+                  opacity: 0;
+                }
+              }
+              
+              @keyframes pulse-dot {
+                0% {
+                  transform: scale(.8);
+                }
+                50% {
+                  transform: scale(1);
+                }
+                100% {
+                  transform: scale(.8);
+                }
+              }
+        
+
+        .l1
+        {
+                margin: 7vh;
+
+        }
+
+        {% comment %} 
+        11.786
+        26.071
+        40.357
+        54.643
+        68.929
+        83.214 
+        {% endcomment %}
+
+        .c1 
+        {
+                left : 11.786vw;
+
+        }
+
+        .c2
+        {
+                left: 26.071vw ;
+        }
+
+        .c3
+        {
+                left: 40.3575vw ;
+        }
+
+        .c4
+        {
+                left: 54.643vw ;
+        }
+        .c5
+        {
+                left: 68.929vw ;
+        }
+
+        .c6
+        {
+                left: 83.214vw ;
+        }
+
+        {% comment %} 
+        18.928
+        33.214
+        47.500
+        61.786
+        76.072
+        {% endcomment %}
+
+        .l2 
+        {
+                margin : 25vh ;
+                      
+        }
+
+        .c7
+        {
+                left: 18.928vw ;
+        }
+
+        .c8
+        {
+                left: 33.214vw ;
+        }
+
+        .c9
+        {
+                left: 47.500vw ;
+        }
+
+        .c10
+        {
+                left: 61.786vw ;
+        } 
+
+
+        .c11
+        {
+                left: 76.072vw ;
+        } 
+
+
+        {% comment %} 
+        26.071
+        40.357
+        54.643
+        68.929 
+        {% endcomment %}
+
+        .l3 
+        {
+                margin : 43vh ; 
+        }
+
+        .c12
+        {
+                left: 26.071vw ;
+        } 
+
+
+        .c13
+        {
+                left: 40.357vw ;
+        } 
+
+
+        .c14
+        {
+                left: 54.643vw ;
+        } 
+
+
+        .c15
+        {
+                left: 68.929vw ;
+        } 
+
+        {% comment %} 
+        33.214
+        47.500
+        61.786 
+        {% endcomment %}
+
+        .l4 
+        {
+                margin : 61vh ; 
+
+        }
+
+        .c16
+        {
+                left: 33.214vw ;
+        } 
+
+
+        .c17
+        {
+                left: 47.500vw ;
+        } 
+
+
+        .c18
+        {
+                left: 61.786vw ;
+        } 
+
+        {% comment %} 
+        40.357
+        54.643 
+        {% endcomment %}
+
+        .l5 
+        {
+                margin : 79vh ;
+        }
+
+        .c19
+        {
+                left: 40.357vw ;
+        } 
+
+
+        .c20
+        {
+                left: 54.643vw ;
+        } 
+
+        {% comment %} 
+        47.500
+        {% endcomment %}
+
+        .l6 
+        {
+                margin : 97vh ; 
+        }
+        .c21
+        {
+                left: 47.500vw ;
+        } 
+
+
+        /* Bootstrap 4 text input with search icon */
+
+        .has-search .form-control {
+        padding-left: 2.375rem;
+        }
+
+
+        .output
+        {
+                padding: 15px 25px;
+                border-radius: 2vw;
+                position: absolute;
+                left: 40vw;
+                top: 160vh;
+                width: 20vw;
+                height: 10vh;
+        /* background-color: #4585F1; */
+        background-image: -moz-linear-gradient(top left, #4084F9 0%, #4585F1 100%);
+        background-image: -o-linear-gradient(top left, #4084F9 0%, #4585F1 100%);
+        background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #4585F1), color-stop(1, #0097DE));
+        background-image: -webkit-linear-gradient(top left, #4084F9 0%, #4585F1 100%);
+        color: white;
+        border: 1px darkblue;
+        font-size: 9.5pt;
+        }
+        /* Styles for wrapping the search box */
+
+        .btn
+        {
+                left: 40vw;
+                top: 160vh;
+          {% comment %} /* background: linear-gradient(90deg, #405DE6 0.16%, #833AB4 34.17%, #C13584 63.33%, #E1306C 95.62%); */ {% endcomment %}
+          background: linear-gradient(45deg , #f6cc49 , #ea772e , #db326e ,#c42c9d,#7241d1,#554ddd);
+          opacity: 1;
+          {% comment %} /* box-shadow: -40px -10px 70px #405DE6 , 40px -10px 70px #833AB4  , -40px 10px 70px #C13584 , 40px 10px 70px #E1306C ; */ {% endcomment %}
+          border: none;
+          outline: none;
+          
+          transition : 1s ;
+          animation: btn 1s linear infinite;
+
+        }
+
+        @keyframes btn 
+        {
+          0%
+          {
+            filter: hue-rotate(0deg);
+          }
+          100%
+          {
+            filter: hue-rotate(360deg);
+          }
+
+        }
+
+        .btn:before
+        {
+          content: ' ';
+          position : absolute ;
+          height: 100%;
+          width: 100%;
+          background : linear-gradient( 45deg , #f6cc49 , #ea772e , #db326e ,#c42c9d,#7241d1,#554ddd);
+          top: -20 px ;
+          {% comment %} /* left: -20px ; */ {% endcomment %}
+          filter: blur(20px);
+          z-index: -9999;
+          left : 0vw ;
+          top : 0vh ;
+        }
+        .btn:after
+        {
+          content: ' ';
+          position : absolute ;
+          height: 100%;
+          width: 100%;
+          background : linear-gradient( 45deg  , #f6cc49 , #ea772e , #db326e ,#c42c9d,#7241d1,#554ddd );
+          {% comment %} top: -20 px ;
+          left: -20px ; {% endcomment %}
+          filter: blur(20px);
+          z-index: -9999;
+          left : 0vw ;
+          top : 0vh ;
+        }
+
+
+        .btn output{
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+                text-shadow: #404040;
+                font-weight: 800;
+        }
+
+
+
+        @media screen and (max-width: 510px) {
+        .top-toolbar nav a:nth-child(2), a:nth-child(3), footer {
+        display:none;
+        }
+
+        .logo {
+        max-width: 40%;
+        }
+
+        .database
+        {
+                
+        }
+        }
+        </style>
+
+        {% comment %} 
+
+        set the base 
+
+        background colour 
+        10 spheres setting & alignation below input
+        spheres turning to red / green on good / bad result from models
+        output button 
+
+
+        improve the base to threshold 
+
+
+        further improvements 
+
+        input animation
+        turn off on input 
+        data base hover animation 
+        input animation off --> sphere animation on 
+        sphere animation off with respective colors --> output button glow with red/green hover animation 
+
+
+        {% endcomment %}
+
+        {% comment %} 
+        UI TOOLS 
+
+        google fonts 
+        fontspace 
+        pexels & unplash & pixabay, freepik  - free pics 
+        coolors, color hunt, mr.pugo ( insta ), - color combination 
+        illustrations - undraw, iconscout 
+
+
+        {% endcomment %}
+        <head>
+                
+
+                <meta charset="UTF-8">
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Google</title>
+                <link rel="icon" href="./assets/img/favicon.ico">
+                {% comment %} <link rel="stylesheet" type="text/css" href="./static/style.css"> {% endcomment %}
+                
+                <link rel="stylesheet" 
+                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+                
+        </head>
+
+
+        <body> 
+
+                <div class="top-toolbar">
+                <nav>
+                {% comment %} <a href="#">+me</a>
+                <a href="#">Gmail</a>
+                <a href="#">Images</a> {% endcomment %}
+                {% comment %} <img src="https://dl.dropboxusercontent.com/u/25441638/1.5-google-clone/images/grid.png" /> {% endcomment %}
+                <a class = "database" href="#">
+                        <button class="signin" name = "database">Database</button>
+                </a> 
+                </nav>
+                </div>
+                <div class="search">
+
+                {% comment %} 
+                https://see.fontimg.com/api/renderfont4/y1JZ/eyJyIjoiZnMiLCJoIjo4MSwidyI6MTI1MCwiZnMiOjY1LCJmZ2MiOiIjMDAwMDAwIiwiYmdjIjoiI0ZGRkZGRiIsInQiOjF9/RGV0ZWN0IElU/precious.png
+                https://see.fontimg.com/api/renderfont4/GELq/eyJyIjoiZnMiLCJoIjo4MSwidyI6MTI1MCwiZnMiOjY1LCJmZ2MiOiIjMDAwMDAwIiwiYmdjIjoiI0ZGRkZGRiIsInQiOjF9/RGV0ZWN0IElU/mariane-lusia.png
+
+                {% endcomment %}
+                {% load static %}
+                        <div class="logo">
+                                <img src="./static/img/detectit.jpg" />
+                        </div>
+
+                        <form method="POST">
+                                {% csrf_token %}
+                                <div class = has-search> 
+                                        <span class="fa fa-search form-control-feedback"></span>
+                                        <input name="urlname" placeholder = "Enter URL" class=" url search-bar form-control" type="text" autofocus x-webkit-speech/>
+                                </div> 
+                                {{xgb_n}}
+
+                        </form>
+
+                        {% comment %} 
+
+                        <div class="search-nav">
+                        <div class="search-button">
+                                        <a href="#"><button type="submit">Google Search</button></a>
+                                </form>
+                                        <a href="#"><button>I'm Feeling Lucky</button></a>
+                        </div>  
+                        </div>
+
+                        {% endcomment %}
+                </div>
+
+                        <div class = "l1"> 
+                                                                
+                                {% if "{{xgb_n}}" == "good" %}
+                                        $('circle').css({'background-color': 'green'})
+                                {% endif %}
+                                <div class="c1 circle "></div> 
+                                <div class="c2 circle"></div> 
+                                <div class="c3 circle"></div> 
+                                <div class="c4 circle"></div> 
+                                <div class="c5 circle"></div> 
+                                <div class="c6 circle"></div> 
+
+                        </div> 
+
+                        <div class = "l2">
+                                <div class="c7 circle"></div> 
+                                <div class="c8 circle"></div> 
+                                <div class="c9 circle"></div> 
+                                <div class="c10 circle"></div>
+                                <div class="c11 circle"></div>
+                        </div>
+
+                        <div class = "l3">
+
+                                <div class="c12 circle"></div>
+                                <div class="c13 circle"></div>
+                                <div class="c14 circle"></div>
+                                <div class="c15 circle"></div>
+                        </div>
+
+                        <div class = "l4">
+
+                                <div class="c16 circle"></div>
+                                <div class="c17 circle"></div>
+                                <div class="c18 circle"></div>
+                        </div>
+
+                        <div class = "l5">
+
+                                <div class="c19 circle"></div>
+                                <div class="c20 circle"></div>
+                        </div>
+
+                        <div class = "l6">
+
+                                <div class="c21 circle"></div>
+                        </div> 
+
+                        
+                        <button class="btn output" name = "output">{{ensemble}}</button>
+
+                
+
+                {% comment %} <div class="footer">
+                        <footer class="bottom-toolbar">
+                                <nav class="footer-left">
+                                        <a href="#">Advertising</a>
+                                        <a href="#">Business</a>
+                                        <a href="#">About</a>
+                                </nav>
+                                <nav class="footer-right">
+                                        <a href="#">New Privacy &amp; Terms</a>
+                                        <a href="#">Settings</a>
+                                </nav>
+                        </footer>
+                </div> {% endcomment %}
+
+                
+
+        </body> 
+
+        <script  type="text/javascript" > 
+
+
+                var test = document.getElementsByClassName("c1");
+                var a = "{{xgb_n}}"
+
+                if( a == "good" )
+                {
+                        $('c1').css({'background-color': 'green'})
+                        //test.style.background-color  = #3bd62d ;
+                }
+                else 
+                {
+                        $('c1').css({'background-color': 'red'})
+                        //test.style.background-color = #ff034e ;
+                }
+                
+                
+                
+        </script> 
+
+
+        
+        
+                {% comment %} 
+                        {
+        
+                                document.getElementById("c1").style.cssText = 
+                                `
+                                position: absolute;
+                                left: 50%;
+                                top: 50%;
+                                transform: translateX(-50%) translateY(-50%);
+                                width: 30px;
+                                height: 30px;
+                                
+                                &:before {
+                                content: '';
+                                position: relative;
+                                display: block;
+                                width: 300%;
+                                height: 300%;
+                                box-sizing: border-box;
+                                margin-left: -100%;
+                                margin-top: -100%;
+                                border-radius: 45px;
+                                background-color: #3bd62d;
+                                animation: pulse-ring 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+                                }
+                                
+                                &:after {
+                                content: '';
+                                position: absolute;
+                                left: 0; 
+                                top: 0;
+                                display: block;
+                                width: 100%;
+                                height: 100%;
+                                background-color: white;
+                                border-radius: 15px;
+                                box-shadow: 0 0 8px rgba(0,0,0,.3);
+                                animation: pulse-dot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -.4s infinite;
+                                }
+                                
+                @keyframes pulse-ring {
+                        0% {
+                        transform: scale(.33);
+                        }
+                        80%, 100% {
+                        opacity: 0;
+                        }
+                }
+                
+                @keyframes pulse-dot {
+                        0% {
+                        transform: scale(.8);
+                        }
+                        50% {
+                        transform: scale(1);
+                        }
+                        100% {
+                        transform: scale(.8);
+                        }
+                }
+                                `;
+        
+                        } {% endcomment %}
+
+</html> 

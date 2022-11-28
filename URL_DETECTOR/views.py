@@ -5,18 +5,25 @@ import joblib
 import numpy as np
 import pandas as pd 
 from django.contrib import messages
+from django.conf.urls.static import static
+from django.utils.safestring import mark_safe
+from django.template import Library
 
+
+count = 0 
 
 def url(request) :
     if request.method == 'POST' :         
         if request.POST["urlname"] : 
-            
+                
+                global count 
                 # LOADING MODELS 
                 
-                lr_model = pickle.load(open("lr_model.pkl", "rb")) 
+                lr_model = pickle.load(open("lr_model.pkl", "rb"))
                 mnb_model = pickle.load(open("mnb_model.pkl", "rb")) 
-                # rf_classifier = pickle.load(open("tfidf_2grams_randomforest.p", "rb")) 
-                # svc_model = joblib.load(open("predictor.joblib", "rb")) 
+                # xgb_model = pickle.load(open("xgb_pipeline.pkl", "rb")) 
+                # sgd_model = pickle.load(open("sgd_pipeline.pkl", "rb"))
+
                 
                 # NOT TRAINED MODELS 
                 xgb_classifier = pickle.load(open("xgb_classifier.pkl", "rb")) 
@@ -27,57 +34,8 @@ def url(request) :
                 svm_classifier = pickle.load(open("svm_classifier.pkl", "rb")) 
                 dt_classifier = pickle.load(open("dt_classifier.pkl", "rb")) 
                 mnb_classifier = pickle.load(open("mnb_classifier.pkl", "rb")) 
-                
-                pickle.dump(xgb_classifier,open("xgb_classifier_cv_2.pkl","wb"))
-                pickle.dump(ada_classifier,open("ada_classifier_cv_2.pkl","wb"))
-                pickle.dump(sgd_classifier,open("sgd_classifier_cv_2.pkl","wb"))
-                pickle.dump(lr_classifier,open("lr_classifier_cv_2.pkl","wb"))
-                pickle.dump(rf_classifier,open("rf_classifier_cv_2.pkl","wb"))
-                pickle.dump(svm_classifier,open("svm_classifier_cv_2.pkl","wb"))
-                pickle.dump(dt_classifier,open("dt_classifier_cv_2.pkl","wb"))
-                pickle.dump(mnb_classifier,open("mnb_classifier_cv_2.pkl","wb"))
-                
-                pickle.dump(xgb_classifier,open("xgb_classifier_cv_3.pkl","wb"))
-                pickle.dump(ada_classifier,open("ada_classifier_cv_3.pkl","wb"))
-                pickle.dump(sgd_classifier,open("sgd_classifier_cv_3.pkl","wb"))
-                pickle.dump(lr_classifier,open("lr_classifier_cv_3.pkl","wb"))
-                pickle.dump(rf_classifier,open("rf_classifier_cv_3.pkl","wb"))
-                pickle.dump(svm_classifier,open("svm_classifier_cv_3.pkl","wb"))
-                pickle.dump(dt_classifier,open("dt_classifier_cv_3.pkl","wb"))
-                pickle.dump(mnb_classifier,open("mnb_classifier_cv_3.pkl","wb"))
-                
-                # COUNT VECTORIZER N GRAM MODELS 
 
-                
-                # TF-IDF VECTORIZER N GRAM MODELS 
-                pickle.dump(xgb_classifier,open("xgb_classifier_tf_1.pkl","wb"))
-                pickle.dump(ada_classifier,open("ada_classifier_tf_1.pkl","wb"))
-                pickle.dump(sgd_classifier,open("sgd_classifier_tf_1.pkl","wb"))
-                pickle.dump(lr_classifier,open("lr_classifier_tf_1.pkl","wb"))
-                pickle.dump(rf_classifier,open("rf_classifier_tf_1.pkl","wb"))
-                pickle.dump(svm_classifier,open("svm_classifier_tf_1.pkl","wb"))
-                pickle.dump(dt_classifier,open("dt_classifier_tf_1.pkl","wb"))
-                pickle.dump(mnb_classifier,open("mnb_classifier_tf_1.pkl","wb"))
-                
-                pickle.dump(xgb_classifier,open("xgb_classifier_tf_2.pkl","wb"))
-                pickle.dump(ada_classifier,open("ada_classifier_tf_2.pkl","wb"))
-                pickle.dump(sgd_classifier,open("sgd_classifier_tf_2.pkl","wb"))
-                pickle.dump(lr_classifier,open("lr_classifier_tf_2.pkl","wb"))
-                pickle.dump(rf_classifier,open("rf_classifier_tf_2.pkl","wb"))
-                pickle.dump(svm_classifier,open("svm_classifier_tf_2.pkl","wb"))
-                pickle.dump(dt_classifier,open("dt_classifier_tf_2.pkl","wb"))
-                pickle.dump(mnb_classifier,open("mnb_classifier_tf_2.pkl","wb"))
-                
-                pickle.dump(xgb_classifier,open("xgb_classifier_tf_3.pkl","wb"))
-                pickle.dump(ada_classifier,open("ada_classifier_tf_3.pkl","wb"))
-                pickle.dump(sgd_classifier,open("sgd_classifier_tf_3.pkl","wb"))
-                pickle.dump(lr_classifier,open("lr_classifier_tf_3.pkl","wb"))
-                pickle.dump(rf_classifier,open("rf_classifier_tf_3.pkl","wb"))
-                pickle.dump(svm_classifier,open("svm_classifier_tf_3.pkl","wb"))
-                pickle.dump(dt_classifier,open("dt_classifier_tf_3.pkl","wb"))
-                pickle.dump(mnb_classifier,open("mnb_classifier_tf_3.pkl","wb"))
-                
-                # APPENDING URLS TO PAYLOAD LIST 
+                # PAYLOAD FETCHING 
                 
                 payload = [] 
                 payload.append(request.POST["urlname"]) 
@@ -117,65 +75,259 @@ def url(request) :
                     return(features) 
                     
                 
-                def predict(payload , select ) : 
+                def predict( payload , select ) : 
                     features = ret_features(payload) 
                     print("features:",features) 
                     
                     # Here the dataframe is two attribute indexed data structure it has to be indexed individually.
                     match select : 
-                        case 0 :     
+                        
+                        case 0 :  # MANUAL TUNING 
+                            
                             payload_df = pd.DataFrame(features,index=[0])
+                            
+                            print("XGB")
+                            print("\n", payload_df , "\n") 
                             result = xgb_classifier.predict(payload_df)
-                        case 1 : 
+                            
+                            ThresOpt = 0.448599994182586
+                            opt = xgb_classifier.predict_proba(payload_df)
+                            opt = opt[:,1]
+                            
+                            if( opt > ThresOpt ) :
+                                global count 
+                                count = count + 1 
+                                opt_result = "bad"
+                            else :
+                                opt_result = "good" 
+                            
+                            # prob = xgb_classifier.predict_proba(payload_df)
+                            # prob = prob[:,1]
+                            # print( prob )
+                            
+                        case 1 : # HYPERPLANE
+                            
+                            print("ada_classifier")
                             payload_df = pd.DataFrame(features,index=[1])
+                            print("\n", payload_df , "\n") 
                             result = ada_classifier.predict(payload_df)
-                        case 2 :
-                            payload_df = pd.DataFrame(features,index=[2])
-                            result = sgd_classifier.predict(payload_df)
-                        case 3 :
-                            payload_df = pd.DataFrame(features,index=[3])
-                            result = lr_classifier.predict(payload_df)
-                        case 4 :         
-                            payload_df = pd.DataFrame(features,index=[4])                   
-                            result = rf_classifier.predict(payload_df)
-                        case 5 :
-                            payload_df = pd.DataFrame(features,index=[5])
-                            result = svm_classifier.predict(payload_df)
-                        case 6 :
-                            payload_df = pd.DataFrame(features,index=[6])
-                            result = dt_classifier.predict(payload_df)
-                        case 7 :
-                            payload_df = pd.DataFrame(features,index=[7])
-                            result = mnb_classifier.predict(payload_df)
+                            
+                            ThresOpt = 0.4839
+                            opt = ada_classifier.decision_function(payload_df)
 
+                            if( opt < ThresOpt ) :
+                                opt_result = "good"
+                            else : 
+                                count = count + 1 
+                                opt_result = "bad" 
+                                
+                            # prob = ada_classifier.predict_proba(payload_df)
+                            # prob = prob[:,1]
+                            # print( prob )                        
+                            
+                        case 2 : # NO TUNING  
+                            
+                            print("sgd_classifier")
+                            payload_df = pd.DataFrame(features,index=[2])
+                            print("\n", payload_df , "\n") 
+                            result = sgd_classifier.predict(payload_df)
+                            
+                            if result == [1] : 
+                                count = count + 1 
+                                return("bad")
+                            elif(result == [0]):
+                                return("good") 
+                    
+                            # print( sgd_classifier.predict_proba(payload_df) )
+                            
+                        case 3 : # HYPERPLANE
+                            
+                            print("lr_classifier")
+                            payload_df = pd.DataFrame(features,index=[3])
+                            print("\n", payload_df , "\n") 
+                            result = lr_classifier.predict(payload_df)
+                            
+                            ThresOpt = 0.175
+                            
+                            opt = lr_classifier.decision_function(payload_df)
+
+                            if( opt < ThresOpt ) :
+                                opt_result = "good"
+                            else :
+                                count = count + 1 
+                                opt_result = "bad" 
+                                
+                            # prob = lr_classifier.predict_proba(payload_df)
+                            # prob = prob[:,1]
+                            # print( prob )
+                            
+                        case 4 : # MANUAL TUNING 
+                            
+                            print("rf_classifier")
+                            payload_df = pd.DataFrame(features,index=[4]) 
+                            print("\n", payload_df , "\n")                   
+                            result = rf_classifier.predict(payload_df)
+
+                            ThresOpt = 0.59
+                            
+                            opt = lr_classifier.predict_proba(payload_df)
+                            opt = opt[:,1]
+                            
+                            if( opt > ThresOpt ) :
+                                count = count + 1 
+                                opt_result = "bad"
+                            else :
+                                opt_result = "good" 
+                                
+                            # prob = rf_classifier.predict_proba(payload_df)
+                            # prob = prob[:,1]
+                            # print( prob )
+                                                        
+                        case 5 : # HYPERPLANE
+                            
+                            print("svm_classifier")
+                            payload_df = pd.DataFrame(features,index=[5])
+                            print("\n", payload_df , "\n") 
+                            result = svm_classifier.predict(payload_df)
+                            
+                            ThresOpt = 0.1493
+                            
+                            opt = svm_classifier.decision_function(payload_df)
+
+                            if( opt < ThresOpt ) :
+                                opt_result = "good"
+                            else :
+                                count = count + 1 
+                                opt_result = "bad" 
+                                
+                            # print( svm_classifier.predict_proba(payload_df) )
+                            
+                        case 6 : # NO TUNING 
+                            
+                            print("dt_classifier")
+                            payload_df = pd.DataFrame(features,index=[6])
+                            print("\n", payload_df , "\n") 
+                            result = dt_classifier.predict(payload_df)
+                            
+                            if result == [1] : 
+                                count = count + 1 
+                                return("bad")
+                            elif(result == [0]):
+                                return("good")
+                                
+                            prob = dt_classifier.predict_proba(payload_df)
+                            prob = prob[:,1]
+                            print( prob )                            
+                            
+                        case 7 : # MANUAL TUNING 
+                            
+                            print("mnb_classifier")
+                            payload_df = pd.DataFrame(features,index=[7])
+                            print("\n", payload_df , "\n") 
+                            result = mnb_classifier.predict(payload_df)
+                            
+                            ThresOpt = 0.5309
+                            
+                            opt = lr_classifier.predict_proba(payload_df)
+                            opt = opt[:,1]
+                            
+                            if( opt > ThresOpt ) :
+                                count = count + 1 
+                                opt_result = "bad"
+                            else :
+                                opt_result = "good" 
+                                
+                            # prob = mnb_classifier.predict_proba(payload_df)
+                            # prob = prob[:,1]
+                            # print( prob )
 
                     print( result ) 
                     print("----------------------------------")
                     
                     if result == [1] : 
-                        return("bad")
+                        count = count + 1 
+                        return(["bad",opt_result])
                     elif(result == [0]):
-                        return("good") 
+                        return(["good",opt_result]) 
                     
                     
                 # PREDICTION 
                 
-                lr = lr_model.predict(payload) 
-                mnb = mnb_model.predict(payload) 
+                lr_p = lr_model.predict(payload) 
+                if( lr_p == "bad") : 
+                    count = count + 1 
+                
+                print("----------------LR_MODEL-----------------")
+                prob = lr_model.predict_proba(payload)
+                prob = prob[:,1]
+                print( prob )  
+                print(lr_p)
+                
+                mnb_p = mnb_model.predict(payload) 
+                if( lr_p == "bad") : 
+                    count = count + 1 
+                    
+                print("\n----------------MNB_MODEL-----------------")
+                prob = mnb_model.predict_proba(payload)
+                prob = prob[:,1]
+                print( prob ) 
+                print(mnb_p)  
+                
+                # xgb_p = xgb_model.predict(payload) 
+                # if( xgb_p == 1 ) :
+                #     xgb_p = "good"
+                # else : 
+                #     xgb_p = "bad" 
+                    
+                    
+                # sgd_p = sgd_model.predict(payload) 
+                # if( sgd_p == 1 ) :
+                #     sgd_p = "good"
+                # else : 
+                #     sgd_p = "bad"
+                
                 # xgb = xgb_classifier.predict(payload)  
                 # rf  = injection_test(payload) 
                 # svc = svc_model.predict(payload)
                 
                 # NT MODEL PREDICTIONS 
-                xgb_FE = predict(payload , 0 ) 
-                ada_FE = predict(payload , 1 ) 
-                sgd_FE = predict(payload , 2 )
-                lr_FE = predict(payload , 3 ) 
-                rf_FE = predict(payload , 4 ) 
-                svm_FE = predict(payload , 5 ) 
-                dt_FE = predict(payload , 6 ) 
-                mnb_FE = predict(payload , 7 ) 
                 
+                # HYPER PLANE TUNING PREDICTION 
+                xgb = predict(payload , 0 ) 
+                xgb_n = xgb[0]
+                xgb_hyp = xgb[1]
+                
+                ada = predict(payload , 1 ) 
+                ada_n = ada[0]
+                ada_hyp = ada[1]
+                
+                lr = predict(payload , 3 ) 
+                lr_n = lr[0]
+                lr_hyp = lr[1]
+                
+                svm = predict(payload , 5 ) 
+                svm_n = svm[0]
+                svm_hyp = svm[1]
+                
+                # PROBABILITY TUNING PREDICTION 
+                rf = predict(payload , 4 ) 
+                rf_n = rf[0]
+                rf_opt = rf[1]
+                
+                mnb = predict(payload , 7 ) 
+                mnb_n = mnb[0]
+                mnb_opt = mnb[1]
+                
+                # NO TUNING PREDICTION 
+                sgd_FE = predict(payload , 2 )
+                dt_FE = predict(payload , 6 ) 
+                
+                print( "ensemble count:",count ) 
+                if( count >= 8 ) : 
+                    ensemble = "bad"
+                else : 
+                    ensemble = "good"
+
                 
                 # xgb_NT = NT_predict(payload , 0 ) 
                 # ada_NT = NT_predict(payload , 1 ) 
@@ -187,68 +339,98 @@ def url(request) :
                 # mnb_NT = NT_predict(payload , 7 ) 
 
                 context={
-                    "lr":lr , 
-                    "mnb": mnb,
-                    # "rf" : rf, 
-                    # "svc" : svc 
                     
-                    # NT PREDICTS 
-                    "xgb_FE" : xgb_FE, 
-                    "ada_FE" : ada_FE, 
+                    # PIPELINES 
+                    "lr_p":lr_p , 
+                    "mnb_p": mnb_p,
+                    # "xgb_p" : xgb_p, 
+                    # "sgd_p" : sgd_p, 
+                    
+                    # HYP TUNING 
+                    "xgb_n" : xgb_n, 
+                    "xgb_hyp" : xgb_hyp, 
+                    "ada_n" : ada_n, 
+                    "ada_hyp" : ada_hyp, 
+                    "lr_n" : lr_n, 
+                    "lr_hyp" : lr_hyp, 
+                    "svm_n" : svm_n, 
+                    "svm_hyp" : svm_hyp, 
+                    
+                    # OPT TUNING 
+                    "rf_n" : rf_n,  
+                    "rf_opt" : rf_opt,  
+                    "mnb_n" : mnb_n,
+                    "mnb_opt" : mnb_opt,
+                    
+                    # NO TUNE
                     "sgd_FE" : sgd_FE,
-                    "lr_FE" : lr_FE, 
-                    "rf_FE" : rf_FE,  
-                    "svm_FE" : svm_FE, 
                     "dt_FE" : dt_FE, 
-                    "mnb_FE" : mnb_FE
+                    "ensemble" : rf_n
                     
                     # 1 GRAM CV PREDICTS 
-                    "xgb_CV1" : xgb_CV1, 
-                    "ada_CV1" : ada_CV1, 
-                    "sgd_CV1" : sgd_CV1,
-                    "lr_CV1" : lr_CV1, 
-                    "rf_CV1" : rf_CV1,  
-                    "svm_CV1" : svm_CV1, 
-                    "dt_CV1" : dt_CV1, 
-                    "mnb_CV1" : mnb_CV1
+                    
+                    # "xgb_CV1" : xgb_CV1, 
+                    # "ada_CV1" : ada_CV1, 
+                    # "sgd_CV1" : sgd_CV1,
+                    # "lr_CV1" : lr_CV1, 
+                    # "rf_CV1" : rf_CV1,  
+                    # "svm_CV1" : svm_CV1, 
+                    # "dt_CV1" : dt_CV1, 
+                    # "mnb_CV1" : mnb_CV1
+                    
                     # 2 GRAM CV PREDICTS
-                    "xgb_CV2" : xgb_CV2, 
-                    "ada_CV2" : ada_CV2, 
-                    "sgd_CV2" : sgd_CV2,
-                    "lr_CV2" : lr_CV2, 
-                    "rf_CV2" : rf_CV2,  
-                    "svm_CV2" : svm_CV2, 
-                    "dt_CV2" : dt_CV2, 
-                    "mnb_CV2" : mnb_CV2 
+                    
+                    # "xgb_CV2" : xgb_CV2, 
+                    # "ada_CV2" : ada_CV2, 
+                    # "sgd_CV2" : sgd_CV2,
+                    # "lr_CV2" : lr_CV2, 
+                    # "rf_CV2" : rf_CV2,  
+                    # "svm_CV2" : svm_CV2, 
+                    # "dt_CV2" : dt_CV2, 
+                    # "mnb_CV2" : mnb_CV2 
                     # 3 GRAM CV PREDICTS
                     
-                    # 1 GRAM TF-IDF PREDICTS  
-                    "xgb_TF1" : xgb_TF1, 
-                    "ada_TF1" : ada_TF1, 
-                    "sgd_TF1" : sgd_TF1,
-                    "lr_TF1" : lr_TF1, 
-                    "rf_TF1" : rf_TF1,  
-                    "svm_TF1" : svm_TF1, 
-                    "dt_TF1" : dt_TF1, 
-                    "mnb_TF1" : mnb_TF1
+                    # 1 GRAM TF-IDF PREDICTS 
+                     
+                    # "xgb_TF1" : xgb_TF1, 
+                    # "ada_TF1" : ada_TF1, 
+                    # "sgd_TF1" : sgd_TF1,
+                    # "lr_TF1" : lr_TF1, 
+                    # "rf_TF1" : rf_TF1,  
+                    # "svm_TF1" : svm_TF1, 
+                    # "dt_TF1" : dt_TF1, 
+                    # "mnb_TF1" : mnb_TF1
+                    
                     # 2 GRAM TF-IDF PREDICTS
-                    "xgb_TF2" : xgb_TF2, 
-                    "ada_TF2" : ada_TF2, 
-                    "sgd_TF2" : sgd_TF2,
-                    "lr_TF2" : lr_TF2, 
-                    "rf_TF2" : rf_TF2,  
-                    "svm_TF2" : svm_TF2, 
-                    "dt_TF2" : dt_TF2, 
-                    "mnb_TF2" : mnb_TF2  
+                    
+                    # "xgb_TF2" : xgb_TF2, 
+                    # "ada_TF2" : ada_TF2, 
+                    # "sgd_TF2" : sgd_TF2,
+                    # "lr_TF2" : lr_TF2, 
+                    # "rf_TF2" : rf_TF2,  
+                    # "svm_TF2" : svm_TF2, 
+                    # "dt_TF2" : dt_TF2, 
+                    # "mnb_TF2" : mnb_TF2  
+                    
                     # 3 GRAM TF-IDF PREDICTS  
                 }
                 
-                return render(request, "index.html" ,context)
+                return render(request, "google_square.html" ,context)
         else : 
             messages.MessageFailure(request, 'Subscription Unsuccessful')
-            return render ( request , 'index.html')
+            return render ( request , 'google_square.html')
     else : 
-        return render ( request , 'index.html')
+        return render ( request , 'google_square.html')
+    
+
+# def change_background_color(request):
+#     color = request.POST.get('color')
+#     # you could save the input to a model BackgroundColor as an instance or update a current record.
+#     # creating an instance
+#     BackgroundColor.objects.create(bg_color=color)
+#     return JsonResponse({'response': 'successfully changed color'})
+
+
 # def result(request) : 
 #     lr_model = pickle.load("lr_model.pkl")
 #     mnb_model = pickle.load("mnb_model.pkl")
@@ -264,3 +446,55 @@ def url(request) :
     
     # load a .pkl file 
     # 
+    
+    
+    
+# PROBLEM STATEMENT 
+
+# OUR SOLUTION 
+
+# VISION USING VERSION 
+    # FIRE WALLS - TYPES OF FIREWALLS 
+
+# WORK FLOW 
+# TECHNOLOGY
+# SIMILIAR PROJECTS 
+# ADDITIONS  
+
+# UI PORTRAY 
+
+# MACHINE LEARNING MODELS ARCHITECTURE 
+#     DATA SETS - TYPES OF PAYLOADS 
+#     MODELS USED 
+#     OPTIMIZATION TECHNIQUES 
+#         NORMAL MODEL
+#         ENSEMBLED MODEL
+#     PREDICTION  
+    
+    
+# PS 
+# APPROACH 
+# UNIQUENESS
+# TECHNOLOGIES 
+# USER INTERFACE 
+# ADD ONS 
+
+
+# WHY HAVE YOU SELECTED THESE MODELS 
+# WHAT ARE THOSE MODELS - EXPLANATION 
+# TECHNICAL TERMS
+#     FPR 
+#     TPR 
+#     ACCURACY 
+#     PRECISION 
+#     RECALL 
+#     F1 SCORE 
+# OPTIMIZATION 
+# WHY 
+# USE 
+#     HYPER PLANES 
+#     ROC CURVE POINT 
+#     PR CURVE POINT 
+    
+# ENSEMBLING 
+    

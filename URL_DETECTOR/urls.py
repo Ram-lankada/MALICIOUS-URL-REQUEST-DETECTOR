@@ -20,4 +20,12 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.url, name = "url" ),
+    #  path('change-background-color/', views.change_background_color, name='change-background-color'),
+
 ]
+
+# VARIABLE PASSING IN URLS 
+
+# DOC . GET BY CALSS - CLASS NAME 
+# IF CONDITIONS 
+# CSS. COLOR = RED / 

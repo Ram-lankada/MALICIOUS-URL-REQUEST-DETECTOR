@@ -22,8 +22,8 @@
           </form>
           <br> </br> 
           <hr> </hr> 
-          The Logistic Regression prediction is {{lr}} <br> </br>
-          The Multi binomial model prediction is {{mnb}} <br> </br>  
+          The Logistic Regression prediction is {{lr_p}} <br> </br>
+          The Multi binomial model prediction is {{mnb_p}} <br> </br>  
 
           {% comment %} The Random forest model prediction is {{rf}} <br> </br> {% endcomment %}
           {% comment %} The randomforest model prediction is {{svc}} <br> </br> {% endcomment %}
@@ -31,22 +31,39 @@
 
 
           {% comment %} FEATURE EXTRACTED SPLITTED TRAINING SET PREDICTONS  {% endcomment %}
-          The XGB model prediction is {{xgb_FE}} <br> </br>
-          The AdaBoostClassifier model prediction is {{ada_FE}} <br> </br>
-          The SGDClassifier model prediction is {{sgd_FE}} <br> </br>
-          The LogisticRegression model prediction is {{lr_FE}} <br> </br>
-          The RandomForestClassifier model prediction is {{rf_FE}} <br> </br>
-          The SVC model prediction is {{svm_FE}} <br> </br>
-          The DecisionTreeClassifier model prediction is {{dt_FE}} <br> </br>
-          The MultinomialNB model prediction is {{mnb_FE}} <br> </br>
+          The xgb_n model prediction is {{xgb_n}} <br> </br>
+          The xgb_hyp model prediction is {{xgb_hyp}} <br> </br>
+
+          The ada_n model prediction is {{ada_n}} <br> </br>
+          The ada_hyp model prediction is {{ada_hyp}} <br> </br>
+
+          The lr_n model prediction is {{lr_n}} <br> </br>
+          The lr_hyp model prediction is {{lr_hyp}} <br> </br>
+
+          The svm_n model prediction is {{svm_n}} <br> </br>
+          The svm_hyp model prediction is {{svm_hyp}} <br> </br>
+
           
-          1 GRAM COUNT VECTORIZER 
+          The rf_n model prediction is {{rf_n}} <br> </br>
+          The rf_opt model prediction is {{rf_opt}} <br> </br>
+
+          The mnb_n model prediction is {{mnb_n}} <br> </br>
+          The mnb_opt model prediction is {{mnb_opt}} <br> </br>
+
+          The SGDClassifier model prediction is {{sgd_FE}} <br> </br>
+          The DecisionTreeClassifier model prediction is {{dt_FE}} <br> </br>
+
+          The xgb_p model prediction is {{xgb_p}} <br> </br>
+          The sgd_p model prediction is {{sgd_p}} <br> </br>
+
+
+          {% comment %} 1 GRAM COUNT VECTORIZER 
           2 GRAM COUNT VECTORIZER 
           3 GRAM COUNT VECTORIZER 
 
           1 GRAM TF-IDF VECTORIZER
           2 GRAM TF-IDF VECTORIZER
-          3 GRAM TF-IDF VECTORIZER
+          3 GRAM TF-IDF VECTORIZER {% endcomment %}
 
           {% comment %} {% for message in messages %}
             <div class="alert alert-success">
@@ -54,6 +71,6 @@
             </div>
           {% endfor %}  {% endcomment %}
         
-        <script src="" async defer></script>
+          {% comment %} <script src="{% static 'main.js' %}"></script> {% endcomment %}
     </body>
 </html>
